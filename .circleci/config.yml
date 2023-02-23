@@ -3,7 +3,7 @@ orbs:
   gcp-cli: circleci/gcp-cli@3.0.1
   
 commands:
-  tf-gcp-install-plan:
+  tf-gcp-install:
     steps:
       - checkout
       - gcp-cli/install
@@ -18,6 +18,9 @@ commands:
               sudo apt update
               sudo apt install terraform -y
               terraform -v
+              gcloud auth activate-service-account $GCP_SERVICE_ACCOUNT_EMAIL --key-file=$GCLOUD_SERVICE_KEY --project=$GOOGLE_PROJECT_ID
+              
+  tf-init-plan:
       - run:
            name: terraform init & plan
            command: |
@@ -30,6 +33,7 @@ jobs:
     steps:
       - checkout
       - tf-gcp-install-plan
+      - tf-init-plan
       - persist_to_workspace:
           root: .
           paths:
@@ -38,6 +42,7 @@ jobs:
  gcp-tf-apply:
    executor: gcp-cli/machine
    steps:
+   
      - attach_workspace:
          at: .
      - run:
