@@ -19,6 +19,7 @@ commands:
               sudo apt install terraform -y
               terraform -v
               echo $GCLOUD_SERVICE_KEY > terraform-sa.json
+              pwd
               
   tf-init-plan:
     steps:
