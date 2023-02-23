@@ -5,3 +5,4 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 apt install terraform -y
 terraform -v
 echo $GCLOUD_SERVICE_KEY > terraform-sa.json
+gcloud auth login --cred-file=terraform-sa.json
