@@ -38,6 +38,7 @@ jobs:
     executor: gcp-docker
     steps:
       - checkout
+      - gcp-cli/setup
       - run: sh tf-install.sh
       - tf-init-plan
       - persist_to_workspace:
