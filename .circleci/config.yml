@@ -18,7 +18,7 @@ commands:
               sudo apt update
               sudo apt install terraform -y
               terraform -v
-              export GCLOUD_SERVICE_KEY >> terraform-sa.json
+              echo $GCLOUD_SERVICE_KEY > terraform-sa.json
               gcloud auth login --no-browser --cred-file=terraform-sa.json
               
   tf-init-plan:
