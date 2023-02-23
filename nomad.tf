@@ -1,4 +1,5 @@
 provider "google-beta" {
+  credentials = "${file("terraform-sa.json")}"
   project = "dev-vijay-pandian"
   region  = "northamerica-northeast2"
   zone    = "northamerica-northeast2-a"
