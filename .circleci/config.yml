@@ -39,8 +39,9 @@ jobs:
     steps:
       - checkout
       - gcp-cli/setup
-      - run: sh tf-install.sh
-      - tf-init-plan
+      - run: echo $HOME
+      #- run: sh tf-install.sh
+      #- tf-init-plan
       - persist_to_workspace:
           root: .
           paths:
