@@ -26,7 +26,6 @@ commands:
       - run:
            name: terraform init & plan
            command: |
-              cd nomad-gcp
               terraform init -input=false
               terraform plan -out tfapply
 
