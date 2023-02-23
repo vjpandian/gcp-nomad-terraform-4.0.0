@@ -18,7 +18,7 @@ commands:
               sudo apt update
               sudo apt install terraform -y
               terraform -v
-              export GOOGLE_CLOUD_PROJECT=$GOOGLE_PROJECT_ID
+              gcloud auth application-default login
       - run:
            name: terraform init & plan
            command: |
