@@ -11,27 +11,26 @@ A basic example is as simple as this:
 
 ```Terraform
 provider "google-beta" {
-  project = "my-project"
-  region  = "us-east1"
-  zone    = "us-east1-a"
+  credentials = "${file("terraform-sa.json")}"
+  project = "dev-vijay-pandian"
+  region  = "northamerica-northeast2"
+  zone    = "northamerica-northeast2-a"
 }
 
 module "nomad" {
   # We strongly recommend pinning the version using ref=<<release tag>> as is done here
-  source = "git::https://github.com/CircleCI-Public/server-terraform.git//nomad-gcp?ref=3.2.0"
+  source = "git::https://github.com/vjpandian/gcp-nomad-terraform-4.0.0.git//nomad-gcp?ref=main"
 
-  zone            = "us-east1-a"
-  region          = "us-east1"
+  zone            = "northamerica-northeast2-a"
+  region          = "northamerica-northeast2"
   network         = "default"
-  server_endpoint = "example.com:4647"
+  server_endpoint = "cci4.vijaypandian.xyz:4647"
 }
 
 output "module" {
   value = module.nomad
 }
 ```
-
-There are more examples in the [examples](./examples/) directory.
 
 ## Requirements
 
