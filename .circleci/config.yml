@@ -12,7 +12,7 @@ commands:
            name: tf install
            command: |
               sudo apt-get install wget curl unzip software-properties-common gnupg2 -y
-              sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+              sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" --allow-unauthenticated
               sudo apt-get update -y
               sudo apt-get install terraform -y
               terraform -v
