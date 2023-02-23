@@ -7,9 +7,4 @@ terraform {
       source = "hashicorp/google-beta"
     }
   }
-  # Specify backend here
-  backend "gcs" {
-    bucket  = "tf-state-nomad-vijay"
-    prefix  = "terraform/state"
-  }
 }
