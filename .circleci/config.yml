@@ -1,13 +1,13 @@
 version: 2.1
 orbs:
-  gcp-cli: circleci/gcp-cli@2.4.1
+  gcp-cli: circleci/gcp-cli@3.0.1
   
 commands:
   tf-gcp-install-plan:
     steps:
       - checkout
       - gcp-cli/install
-      - gcp-cli/initialize
+      - gcp-cli/setup
       - run:
            name: tf install
            command: |
@@ -18,7 +18,6 @@ commands:
               sudo apt update
               sudo apt install terraform -y
               terraform -v
-              gcloud auth application-default login
       - run:
            name: terraform init & plan
            command: |
