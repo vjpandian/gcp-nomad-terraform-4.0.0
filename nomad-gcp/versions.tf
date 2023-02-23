@@ -1,4 +1,8 @@
 terraform {
+  backend "gcs" {
+   bucket = "tf-state-nomad-vijay"
+   prefix = "cci4-nomad"
+  }
   required_providers {
     google = {
       version = "~> 3.0"

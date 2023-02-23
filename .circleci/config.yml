@@ -26,6 +26,7 @@ commands:
       - run:
            name: terraform init & plan
            command: |
+              cd nomad-gcp
               terraform init -input=false
               terraform plan -out tfapply
 
@@ -45,13 +46,13 @@ jobs:
  gcp-tf-apply:
    executor: gcp-cli/machine
    steps:
-   
      - attach_workspace:
          at: .
      - tf-gcp-install
      - run:
          name: terraform
          command: |
+           cd nomad-gcp
            terraform apply -auto-approve tfapply
          no_output_timeout: 3h     
      - persist_to_workspace:
