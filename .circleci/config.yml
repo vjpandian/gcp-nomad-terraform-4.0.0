@@ -47,6 +47,7 @@ jobs:
    
      - attach_workspace:
          at: .
+     - tf-gcp-install
      - run:
          name: terraform
          command: |
@@ -62,3 +63,8 @@ workflows:
     jobs:
       - gcp-tf-plan:
            context: org-gcp
+      - gcp-tf-apply:
+           requires:
+             - gcp-tf-plan
+           context: org-gcp
+           
