@@ -26,13 +26,14 @@ commands:
       - run:
            name: terraform init & plan
            command: |
-              terraform init -input=false
+              terraform init -input=false -backend-config="bucket=tf-state-nomad-vijay" -backend-config="prefix=cci4-nomad"
               terraform plan -out tfapply
 
 jobs:
  gcp-tf-plan:
     working_directory: /tmp/project
     executor: gcp-cli/machine
+    resource_class: medium
     steps:
       - checkout
       - tf-gcp-install
@@ -44,6 +45,7 @@ jobs:
 
  gcp-tf-apply:
    executor: gcp-cli/machine
+   resource_class: medium
    steps:
      - attach_workspace:
          at: .
@@ -51,7 +53,7 @@ jobs:
      - run:
          name: terraform
          command: |
-           cd nomad-gcp
+           terraform init -input=false -backend-config="bucket=tf-state-nomad-vijay" -backend-config="prefix=cci4-nomad"
            terraform apply -auto-approve tfapply
          no_output_timeout: 3h     
      - persist_to_workspace:
