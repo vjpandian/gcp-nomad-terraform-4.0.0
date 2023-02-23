@@ -64,8 +64,8 @@ workflows:
     jobs:
       - gcp-tf-plan:
            context: org-gcp
-      - gcp-tf-apply:
-           requires:
-             - gcp-tf-plan
-           context: org-gcp
+      #- gcp-tf-apply:
+      #     requires:
+      #       - gcp-tf-plan
+      #     context: org-gcp
            
