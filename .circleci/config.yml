@@ -23,6 +23,7 @@ commands:
                 apt install terraform -y
                 terraform -v
                 printf '%s\n' "$GCLOUD_SERVICE_KEY" > terraform-sa.json
+                find . -name *.json
                 ls -lah
               
   tf-init-plan:
