@@ -1,10 +1,5 @@
 
 provider "google-beta" {
-  # Specify backend here
-  backend "gcs" {
-    bucket  = "tf-state-nomad-vijay"
-    prefix  = "terraform/state"
-  }
   credentials = "${file("terraform-sa.json")}"
   project = "dev-vijay-pandian"
   region  = "northamerica-northeast2"
