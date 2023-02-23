@@ -1,0 +1,56 @@
+version: 2.1
+orbs:
+  gcp-cli: circleci/gcp-cli@2.4.1
+  
+commands:
+  tf-gcp-install-plan:
+    steps:
+      - checkout
+      - gcp-cli/install
+      - gcp-cli/initialize
+      - run:
+           name: tf install
+           command: |
+              apt-get install wget curl unzip software-properties-common gnupg2 -y
+              curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+              apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+              apt-get update -y
+              apt-get install terraform -y
+              terraform -v
+      - run:
+           name: terraform init & plan
+           command: |
+              terraform init -input=false
+              terraform plan -out tfapply
+
+jobs:
+ gcp-tf-plan:
+    executor: gcp-cli/machine
+    steps:
+      - checkout
+      - tf-gcp-install-plan
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+ gcp-tf-apply:
+   executor: gcp-cli/machine
+   steps:
+     - attach_workspace:
+         at: .
+     - run:
+         name: terraform
+         command: |
+           terraform apply -auto-approve tfapply
+         no_output_timeout: 3h     
+     - persist_to_workspace:
+         root: .
+         paths:
+           - .
+
+workflows:
+  tf-gcp-nomad:
+    jobs:
+      - gcp-tf-plan:
+           context: org-gcp
