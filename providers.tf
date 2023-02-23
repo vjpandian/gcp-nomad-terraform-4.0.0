@@ -9,12 +9,12 @@ terraform {
       # NOTE: This can be set to hashicorp/google once scaling_schedules are
       # out of beta on google_compute_autoscaler resources
       source = "hashicorp/google-beta"
+    }
   }
-  provider "google-beta" {
+    provider "google-beta" {
       credentials = "${file("terraform-sa.json")}"
       project = "dev-vijay-pandian"
       region  = "northamerica-northeast2"
       zone    = "northamerica-northeast2-a"
 }
-  }
 }
