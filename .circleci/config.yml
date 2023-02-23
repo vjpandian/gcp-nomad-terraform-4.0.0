@@ -41,7 +41,7 @@ jobs:
       - gcp-cli/setup
       - run: | 
           echo $HOME
-          echo $GOOGLE_APPLICATION_CREDENTIALS
+          echo $cred_file_path
           ls -lah
       #- run: sh tf-install.sh
       #- tf-init-plan
