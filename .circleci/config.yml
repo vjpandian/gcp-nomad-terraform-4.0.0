@@ -21,6 +21,7 @@ commands:
               gcloud auth activate-service-account $GCP_SERVICE_ACCOUNT_EMAIL --key-file=$GCLOUD_SERVICE_KEY --project=$GOOGLE_PROJECT_ID
               
   tf-init-plan:
+    steps:
       - run:
            name: terraform init & plan
            command: |
@@ -32,7 +33,7 @@ jobs:
     executor: gcp-cli/machine
     steps:
       - checkout
-      - tf-gcp-install-plan
+      - tf-gcp-install
       - tf-init-plan
       - persist_to_workspace:
           root: .
