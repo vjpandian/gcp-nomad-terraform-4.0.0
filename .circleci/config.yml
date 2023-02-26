@@ -30,12 +30,27 @@ commands:
               terraform plan -out tfapply
 
 jobs:
- gcp-tf-plan:
+ gcp-tf-plan-machine:
     working_directory: /tmp/project
     executor: gcp-cli/machine
     resource_class: medium
     steps:
       - checkout
+      - run: sh tf-install.sh
+      - tf-init-plan
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  
+  gcp-tf-plan-docker:
+    working_directory: /tmp/project
+    executor: cimg/base:current-22.04
+    resource_class: medium
+    steps:
+      - checkout
+      - gcp-cli/install
+      - gcp-cli/setup
       - tf-gcp-install
       - tf-init-plan
       - persist_to_workspace:
@@ -43,28 +58,31 @@ jobs:
           paths:
             - .
 
- gcp-tf-apply:
-   executor: gcp-cli/machine
-   resource_class: medium
-   steps:
-     - attach_workspace:
-         at: .
-     - tf-gcp-install
-     - run:
-         name: terraform
-         command: |
-           terraform init -input=false -backend-config="bucket=tf-state-nomad-vijay" -backend-config="prefix=cci4-nomad"
-           terraform apply -auto-approve tfapply
-         no_output_timeout: 3h     
-     - persist_to_workspace:
-         root: .
-         paths:
-           - .
+
+ #gcp-tf-apply:
+ #  executor: gcp-cli/machine
+ #  resource_class: medium
+ #  steps:
+ #    - attach_workspace:
+ #        at: .
+ #    - tf-gcp-install
+ #    - run:
+ #        name: terraform
+ #        command: |
+ #          terraform init -input=false -backend-config="bucket=tf-state-nomad-vijay" -backend-config="prefix=cci4-nomad"
+ #          terraform apply -auto-approve tfapply
+ #        no_output_timeout: 3h     
+ #    - persist_to_workspace:
+ #        root: .
+ #        paths:
+ #          - .
 
 workflows:
   tf-gcp-nomad:
     jobs:
-      - gcp-tf-plan:
+      - gcp-tf-plan-machine:
+           context: org-gcp
+      - gcp-tf-plan-docker:
            context: org-gcp
       #- gcp-tf-apply:
       #     requires:
