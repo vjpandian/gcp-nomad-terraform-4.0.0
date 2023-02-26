@@ -41,6 +41,7 @@ jobs:
     executor: gcp-cli/machine
     steps:
       - checkout
+      - gcp-cli/install
       - gcp-cli/setup
       - run: sh tf-install.sh
       - tf-init-plan
