@@ -1,29 +1,26 @@
 version: 2.1
 orbs:
   gcp-cli: circleci/gcp-cli@3.0.1
-
-executors:
-  gcp-docker:
-    docker:
-      - image: cimg/gcp:2023.02.1
-    resource_class: medium
   
 commands:
-  tf-install:
+  tf-gcp-install:
     steps:
       - checkout
+      - gcp-cli/install
       - gcp-cli/setup
       - run:
            name: tf install
            command: |
-                sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-                wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
-                sudo gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
-                echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-                sudo apt install terraform -y
-                terraform -v
-                echo $GCLOUD_SERVICE_KEY > terraform-sa.json
-
+              sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+              wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+              gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
+              echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+              sudo apt update
+              sudo apt install terraform -y
+              terraform -v
+              echo $GCLOUD_SERVICE_KEY > terraform-sa.json
+              pwd
+              
   tf-init-plan:
     steps:
       - run:
@@ -35,13 +32,11 @@ commands:
 jobs:
  gcp-tf-plan:
     working_directory: /tmp/project
-    #executor: gcp-docker
     executor: gcp-cli/machine
+    resource_class: medium
     steps:
       - checkout
-      - gcp-cli/install
-      - gcp-cli/setup
-      - tf-install
+      - tf-gcp-install
       - tf-init-plan
       - persist_to_workspace:
           root: .
@@ -49,11 +44,12 @@ jobs:
             - .
 
  gcp-tf-apply:
-   executor: gcp-docker
+   executor: gcp-cli/machine
+   resource_class: medium
    steps:
      - attach_workspace:
          at: .
-     - tf-install
+     - tf-gcp-install
      - run:
          name: terraform
          command: |
