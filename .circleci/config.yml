@@ -36,7 +36,7 @@ jobs:
      resource_class: medium
      steps:
        - checkout
-       - run: sh tf-install.sh
+       - tf-gcp-install
        - tf-init-plan
        - persist_to_workspace:
            root: .
@@ -50,8 +50,8 @@ jobs:
      resource_class: medium
      steps:
        - checkout
-       - gcp-cli/install
-       - gcp-cli/setup
+       #- gcp-cli/install
+       #- gcp-cli/setup
        - tf-gcp-install
        - tf-init-plan
        - persist_to_workspace:
