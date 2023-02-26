@@ -30,33 +30,34 @@ commands:
               terraform plan -out tfapply
 
 jobs:
- gcp-tf-plan-machine:
-    working_directory: /tmp/project
-    executor: gcp-cli/machine
-    resource_class: medium
-    steps:
-      - checkout
-      - run: sh tf-install.sh
-      - tf-init-plan
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+  gcp-tf-plan-machine:
+     working_directory: /tmp/project
+     executor: gcp-cli/machine
+     resource_class: medium
+     steps:
+       - checkout
+       - run: sh tf-install.sh
+       - tf-init-plan
+       - persist_to_workspace:
+           root: .
+           paths:
+             - .
   
   gcp-tf-plan-docker:
-    working_directory: /tmp/project
-    executor: cimg/base:current-22.04
-    resource_class: medium
-    steps:
-      - checkout
-      - gcp-cli/install
-      - gcp-cli/setup
-      - tf-gcp-install
-      - tf-init-plan
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+     working_directory: /tmp/project
+     docker: 
+       - image: cimg/base:current-22.04
+     resource_class: medium
+     steps:
+       - checkout
+       - gcp-cli/install
+       - gcp-cli/setup
+       - tf-gcp-install
+       - tf-init-plan
+       - persist_to_workspace:
+           root: .
+           paths:
+             - .
 
 
  #gcp-tf-apply:
