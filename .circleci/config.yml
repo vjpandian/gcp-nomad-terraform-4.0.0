@@ -37,16 +37,13 @@ commands:
 jobs:
  gcp-tf-plan:
     working_directory: /tmp/project
-    executor: gcp-docker
+    #executor: gcp-docker
+    executor: gcp-cli/machine
     steps:
       - checkout
       - gcp-cli/setup
-      - run: | 
-          echo $HOME
-          echo $cred_file_path
-          ls -lah
-      #- run: sh tf-install.sh
-      #- tf-init-plan
+      - run: sh tf-install.sh
+      - tf-init-plan
       - persist_to_workspace:
           root: .
           paths:
