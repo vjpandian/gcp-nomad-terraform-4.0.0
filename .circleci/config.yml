@@ -81,8 +81,8 @@ jobs:
 workflows:
   tf-gcp-nomad:
     jobs:
-      - gcp-tf-plan-machine:
-           context: org-gcp
+      #- gcp-tf-plan-machine:
+      #     context: org-gcp
       - gcp-tf-plan-docker:
            context: org-gcp
       #- gcp-tf-apply:
